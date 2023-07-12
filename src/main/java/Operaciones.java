@@ -1,13 +1,21 @@
 import javax.swing.*;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 
 public class Operaciones {
 
     private Double dollar;
     private Double euros;
 
+    private DecimalFormat df;
+
     public Operaciones(){
-        dollar=17.09;
-        euros=18.79;
+        df = new DecimalFormat("0.00");
+        df.setRoundingMode(RoundingMode.HALF_UP);
+        String [] cambio = Cambio.obtenerCambio();
+        euros=Double.parseDouble(cambio[0]);
+        dollar= euros*(1/Double.parseDouble(cambio[1]));
+
     }
 
     public void init(){
@@ -66,6 +74,7 @@ public class Operaciones {
         }
         try {
             monedas = Double.parseDouble(cantidad);
+
         }catch (NumberFormatException e){
             show(menu,"Error","El numero especificado es incorrecto");
             return;
@@ -78,16 +87,16 @@ public class Operaciones {
 
         switch (accion){
             case "Pesos a Dollar":
-                show(menu,"Conversion","El cambio a dolares es: "+monedas/dollar);
+                show(menu,"Conversion","El cambio a dolares es: "+df.format(monedas/dollar));
                 break;
             case "Pesos a Euros":
-                show(menu,"Conversion","El cambio a euros es: "+monedas/euros);
+                show(menu,"Conversion","El cambio a euros es: "+df.format(monedas/euros));
                 break;
             case "Dollar a Pesos":
-                show(menu,"Conversion","El cambio a euros es: "+monedas*dollar);
+                show(menu,"Conversion","El cambio a euros es: "+df.format(monedas*dollar));
                 break;
             case "Euros a Pesos":
-                show(menu,"Conversion","El cambio a euros es: "+monedas*euros);
+                show(menu,"Conversion","El cambio a euros es: "+df.format(monedas*euros));
                 break;
             default:
                 show(menu,"Error","Opcion no valida");
@@ -116,16 +125,16 @@ public class Operaciones {
 
         switch (accion){
             case "Celcius a Farenheit":
-                show(menu,"Conversion","El cambio de celcius a Farenheit: "+(temp*1.8+32));
+                show(menu,"Conversion","El cambio de celcius a Farenheit: "+df.format(temp*1.8+32));
                 break;
             case "Celcius a Kelvin":
-                show(menu,"Conversion","El cambio de celcius a Farenheit: "+(temp+273.15));
+                show(menu,"Conversion","El cambio de celcius a Farenheit: "+df.format(temp+273.15));
                 break;
             case "Kelvin a Celcius":
-                show(menu,"Conversion","El cambio de Kelvin a Celcius: "+(temp-273.15));
+                show(menu,"Conversion","El cambio de Kelvin a Celcius: "+df.format(temp-273.15));
                 break;
             case "Farenheit a Celcius":
-                show(menu,"Conversion","El cambio de Farenheit a Celcius: "+((temp-32)/1.8));
+                show(menu,"Conversion","El cambio de Farenheit a Celcius: "+df.format((temp-32)/1.8));
                 break;
             default:
                 show(menu,"Error","Opcion no valida");
